@@ -1,7 +1,7 @@
 # STMCubeMX外设配置
 
 ## RCC时钟
-![时钟配置](时钟配置.png)
+![时钟配置](STM32_Pic/时钟配置.png)
 
 High Speed Clock(HSE):高速时钟8MHz
 
