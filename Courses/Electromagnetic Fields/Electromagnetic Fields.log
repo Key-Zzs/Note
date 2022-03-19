@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  19 MAR 2022 22:53
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  20 MAR 2022 00:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/61975/Documents/GitHub/Note/Courses/Electromagnetic Fields/test"
-(c:/Users/61975/Documents/GitHub/Note/Courses/Electromagnetic Fields/test.tex
+**"c:/Users/61975/Documents/GitHub/Note/Courses/Electromagnetic Fields/Electromagnetic Fields"
+(c:/Users/61975/Documents/GitHub/Note/Courses/Electromagnetic Fields/Electromagnetic Fields.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18> (d:/texlive/2021/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
@@ -194,8 +194,8 @@ Package fontspec Info: Font family 'FandolSong-Regular(0)' created for font
 
 )) (d:/texlive/2021/texmf-dist/tex/latex/ctex/config/ctex.cfg
 File: ctex.cfg 2021/03/14 v2.5.6 Configuration file (CTEX)
-) (./test.aux)
-\openout1 = `test.aux'.
+) (./Electromagnetic Fields.aux)
+\openout1 = `"Electromagnetic Fields.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
@@ -315,21 +315,21 @@ Package fontspec Info: Font family 'FandolKai-Regular(0)' created for font
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.53937> on input line 15.
+(Font)              <10.53937> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 15.
+(Font)              <7> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 15.
+(Font)              <5> on input line 17.
 [1
 
-] (./test.aux) ) 
+] [2] (./Electromagnetic Fields.aux) ) 
 Here is how much of TeX's memory you used:
- 5735 strings out of 476919
- 172578 string characters out of 5825424
- 503675 words of memory out of 5000000
- 25672 multiletter control sequences out of 15000+600000
- 407314 words of font info for 68 fonts, out of 8000000 for 9000
+ 5737 strings out of 476919
+ 172814 string characters out of 5825424
+ 507695 words of memory out of 5000000
+ 25673 multiletter control sequences out of 15000+600000
+ 407322 words of font info for 69 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 101i,7n,104p,410b,465s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 101i,7n,104p,428b,465s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on test.pdf (1 page).
+Output written on Electromagnetic Fields.pdf (2 pages).

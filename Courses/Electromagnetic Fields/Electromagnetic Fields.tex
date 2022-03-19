@@ -2,15 +2,17 @@
 \documentclass[UTF8]{article} % book report letter
 \usepackage{ctex}
 
-\title{\heiti 电磁场}
+\title{\heiti 工程电磁场笔记}
 \author{\kaishu 庄梓伸}
-\date{\today}
+\date{\kaishu \today}
 
 % 正文区
 \begin{document}
 \maketitle
 
-\section{电场力与电场强度}
+\section{静电场}
+
+\subparagraph{电场力与电场强度}
 根据我们的中学知识，我们知道两个带电体之间会产生作用力，称为电场力，
 \begin{equation}
     \vec{F_{12}}=\frac{q_{1} q_{2} \cdot \vec{e_{21}}}{4 \pi \varepsilon R^{2}}
@@ -20,18 +22,26 @@
 \end{equation}
 (1)和(2)中$\varepsilon$为真空介电常数。
 
-知道物体接触时能产生支持力或者压力，那为什么带电体之间能够产生力呢？参照重力场的概念，我们引入电场的概念以解释电场力产生的外因。
+物体接触时能产生支持力或者压力，那为什么带电体之间能够产生力呢？参照重力场的概念，我们引入电场的概念以解释电场力产生的外因。
 
 观察电场力的定义(1)，我们可以将$q_{1}$即带电体1的电荷量视作电场力产生的内因，$\frac{q_{2} \cdot \vec{e_{21}}}{4 \pi \varepsilon R^{2}}$视作电场力产生的外因
 所以，我们定义电场强度为
 \begin{equation}
     \vec{E}=\lim_{q_{0} \to 0}\frac{\vec{F}}{q_{0}}
 \end{equation}
-而点电荷的产生的电场可得
+而点电荷的产生的电场强度可得
 \begin{equation}
     \vec{E}=\frac{q \cdot \vec{e_{R}}}{4 \pi \varepsilon R^{2}}
 \end{equation}
 
+\subparagraph{不同电荷分布下的电场强度}
+上文我们得到点电荷的电场强度，但现实工程中我们面对的绝非点电荷这样理想化的模型，在复杂的模型面前我们需要将其化简为不同的电荷分布模型进而分析，
+下文将我们常见的电荷分布分为点电荷和体电荷两种
+\begin{enumerate}
+\item 点电荷分布
+\item 体电荷分布
+\end{enumerate}
 
+\subparagraph{求取静电场电场强度的方法总结}
 
 \end{document}
