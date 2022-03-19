@@ -2,16 +2,36 @@
 \documentclass[UTF8]{article} % book report letter
 \usepackage{ctex}
 
-\title{电磁场}
-\author{Key}
+\title{\heiti 电磁场}
+\author{\kaishu 庄梓伸}
 \date{\today}
 
 % 正文区
 \begin{document}
 \maketitle
 
-Hello World!
+\section{电场力与电场强度}
+根据我们的中学知识，我们知道两个带电体之间会产生作用力，称为电场力，
+\begin{equation}
+    \vec{F_{12}}=\frac{q_{1} q_{2} \cdot \vec{e_{21}}}{4 \pi \varepsilon R^{2}}
+\end{equation}
+\begin{equation}
+    \vec{F_{21}}=\frac{q_{1} q_{2} \cdot \vec{e_{12}}}{4 \pi \varepsilon R^{2}}
+\end{equation}
+(1)和(2)中$\varepsilon$为真空介电常数。
 
-define $f(x)$ as test function $$f(x)=x^2+2x+1$$ which is the function 1. %函数定义
+知道物体接触时能产生支持力或者压力，那为什么带电体之间能够产生力呢？参照重力场的概念，我们引入电场的概念以解释电场力产生的外因。
+
+观察电场力的定义(1)，我们可以将$q_{1}$即带电体1的电荷量视作电场力产生的内因，$\frac{q_{2} \cdot \vec{e_{21}}}{4 \pi \varepsilon R^{2}}$视作电场力产生的外因
+所以，我们定义电场强度为
+\begin{equation}
+    \vec{E}=\lim_{q_{0} \to 0}\frac{\vec{F}}{q_{0}}
+\end{equation}
+而点电荷的产生的电场可得
+\begin{equation}
+    \vec{E}=\frac{q \cdot \vec{e_{R}}}{4 \pi \varepsilon R^{2}}
+\end{equation}
+
+
 
 \end{document}
