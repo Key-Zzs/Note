@@ -1,0 +1,76 @@
+\documentclass[UTF8]{article}
+\usepackage{ctex}
+
+\title{\heiti Signals and Systems}
+\author{\heiti Zishen Zhuang}
+\date{\heiti \today}
+
+\begin{document}
+\maketitle
+
+\section{信号 Signals}
+\subsection{何谓信号？}
+信号指的是以数学函数的形式表示一个或多个变量。
+我们根据信号的不同性质作为分类标准进行以下分类。
+
+\subsection{信号的分类}
+\begin{enumerate}
+    \item 连续时间信号和离散时间信号(Continuous-time and Discrete-time Signals)
+    
+    连续时间信号是指在所有时间t处都有定义的信号，我们用$x(t)$表示；
+    而离散时间信号则是指仅在离散的时刻有定义的信号，我们用$x[n]$表示。
+    从定义我们可以推论出离散时间信号可从连续时间信号中取得，这一过程我们称为{\heiti 取样}(sampling)，其数学形式表示为：
+    \begin{equation}
+        x[n]= \left.x(t)\right|_{t=nT} =x(nT)
+    \end{equation}其中的T表示取样间隔
+
+    \item 周期信号和非周期信号(Periodicand Non-Period Signals)
+    
+    连续周期信号满足以下数学形式：
+    \begin{equation}
+        x(t+T)=x(t)
+    \end{equation}
+    离散周期信号满足以下数学形式：
+    \begin{equation}
+        x[n+N]=x[n]
+    \end{equation}
+    (2)中T表示连续周期信号的周期(period),(3)中N表示离散周期信号的周期，并不是一个定值。
+    而我们可以取得$T=T_{0},2T_{0},3T_{0},...$，其中$T_{0}$为最小正周期，我们称为该连续周期信号的基本周期(fundamental period)；同理，$N_{0}$称为离散周期信号的基本周期。
+    
+    另外，我们又定义{\heiti $f_{0}=\frac{1}{T_{0}}$($Hz$)}和{\heiti $\Omega_{0}=\frac{2\pi}{N_{0}}$($Hz$)}分别为连续周期信号和离散周期信号的基本频率，而对于连续周期信号我们还定义了其角频率{\heiti $\omega_{0}=2\pi f=\frac{2\pi}{T_{0}}$($rad/s$)}。
+
+    在判定离散周期信号时，值得我们注意的是，{\heiti 这里的$N$和$N_{0}$必须为整数}，举例如下：
+    $$x[n]=cos(\frac{1}{4}n)$$
+    其基本周期为$8\pi$，因此类似于$cos(kn)$($k\neq {k}'\pi$)均不是周期信号。
+
+    在判定周期信号叠加时，我们应该注意{\heiti 周期信号的叠加不一定是周期信号}，举例如下：
+    $$x(t)=sin2t+cos\pi t$$
+    $x(t)$视作$sin2t$与$cos \pi t$叠加的信号，
+    而$sin2t$的周期为$\pi$，$cos \pi t$的周期为$2$,
+    此时$\pi$与$2$没有最小公倍数（因为$\pi$不是自然数，而只有自然数有最小公倍数），
+    所以$x(t)=sin2t+cos\pi t$不是周期信号。
+    
+    \item 确定信号和随机信号(Deterministic and Random Signals)
+    \item 能量信号和功率信号(Energy and Power Signals)
+    
+\end{enumerate}
+
+\subsection{信号的基本运算 basic operations on signals}
+\subsubsection{从变量运算 operations performed on dependent variables}
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\subsubsection{自变量运算 operations performed on independent variables}
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\subsection{基本信号 basic signals}
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\section{系统 Systems}
+
+\end{document}
