@@ -1,5 +1,6 @@
 \documentclass[UTF8]{article}
 \usepackage{ctex}
+\usepackage{amsmath}
 
 \title{\heiti Signals and Systems}
 \author{\heiti Zishen Zhuang}
@@ -15,7 +16,7 @@
 
 \subsection{信号的分类}
 \begin{enumerate}
-    \item 连续时间信号和离散时间信号(Continuous-time and Discrete-time Signals)
+    \item 连续时间信号\&离散时间信号(Continuous-time and Discrete-time Signals)
     
     连续时间信号是指在所有时间t处都有定义的信号，我们用$x(t)$表示；
     而离散时间信号则是指仅在离散的时刻有定义的信号，我们用$x[n]$表示。
@@ -24,7 +25,7 @@
         x[n]= \left.x(t)\right|_{t=nT} =x(nT)
     \end{equation}其中的T表示取样间隔
 
-    \item 周期信号和非周期信号(Periodicand Non-Period Signals)
+    \item 周期信号\&非周期信号(Periodicand Non-Period Signals)
     
     连续周期信号满足以下数学形式：
     \begin{equation}
@@ -50,25 +51,100 @@
     此时$\pi$与$2$没有最小公倍数（因为$\pi$不是自然数，而只有自然数有最小公倍数），
     所以$x(t)=sin2t+cos\pi t$不是周期信号。
     
-    \item 确定信号和随机信号(Deterministic and Random Signals)
-    \item 能量信号和功率信号(Energy and Power Signals)
+    \item 确定信号\&随机信号(Deterministic and Random Signals)
+    \item 能量信号\&功率信号(Energy and Power Signals)
     
+    在介绍能量信号与功率信号之前，我们要清楚信号的能量(Signal Energy)与功率(Signal Power)的定义。
+    从电路的知识，我们知道电压与电流在电路中可以作为一种信号存在，此时求电流信号的总能量，我们可以得到
+    $$\int_{t_{1}}^{t_{2}}p(t)dt=\int_{t_{1}}^{t_{2}}\frac{1}{R}u^{2}dt$$
+    而电流信号的平均功率就等于
+    $$\frac{1}{t_{2}-t_{1}}\int_{t_{1}}^{t_{2}}p(t)dt=\frac{1}{t_{2}-t_{1}}\int_{t_{1}}^{t_{2}}\frac{1}{R}u^{2}dt$$
+
+    而我们对于一般信号的能量和功率定义也类似。连续信号$x(t)$的能量定义如下
+    $$\int_{t_{1}}^{t_{2}}\left | x(t) \right |^{2} dt$$
+    平均功率定义如下
+    $$\frac{1}{t_{2}-t_{1}}\int_{t_{1}}^{t_{2}}\left | x(t) \right |^{2} dt$$
+    离散信号$x[n]$的能量定义如下
+    $$\sum_{n=n_{1}}^{n_{2}}\left | x[n] \right |^{2} dt$$
+    平均功率定义如下
+    $$\frac{1}{n_{2}-n_{1}+1}\sum_{n=n_{1}}^{n_{2}}\left | x[n] \right |^{2} dt$$
+    
+    但是在工程或生活中，我们常常不是要求取一个时间段内信号的功率和能量，而是通过信号所产生的总能量和总功率判定这个信号的类型，
+    此时我们更关心信号在一个无穷区间内的能量(signal energy)，连续信号：
+    \begin{equation}
+        E_{\infty }=\lim_{T \to \infty}\int_{-T}^{T}\left | x(t) \right |^{2} dt=\int_{-\infty}^{\infty}\left | x(t) \right |^{2} dt
+    \end{equation}
+    同理，离散信号：
+    \begin{equation}
+        E_{\infty }=\lim_{N \to \infty}\sum_{-N}^{N}\left | x[n] \right |^{2}=\sum_{-\infty}^{\infty}\left | x[n] \right |^{2}
+    \end{equation}
+    相应的，我们也可以求出一个无穷区间内的平均功率(signal power)，连续信号：
+    \begin{equation}
+        P_{\infty }=\lim_{T \to \infty}\frac{1}{2T}\int_{-T}^{T}\left | x(t) \right |^{2} dt=\lim_{T \to \infty}\frac{E_{\infty}}{2T}
+    \end{equation}
+    离散信号：
+    \begin{equation}
+        P_{\infty }=\lim_{N \to \infty}\frac{1}{2N+1}\sum_{-N}^{N}\left | x[n] \right |^{2}=\lim_{N \to \infty}\frac{E_{\infty}}{2N+1}
+    \end{equation}
+
+    现在，我们就可以根据信号的能量和功率的不一致性，将信号进行分成三类：
+    我们定义功率有限，能量无限的信号为{\heiti 功率信号(power signals)}，常见的有\underline{周期信号、阶跃信号}等；
+    定义能量有限，功率为0的信号为{\heiti 能量信号(energy signals)}；
+    能量和功率都无限的信号既不是能量信号也不是功率信号。
+
 \end{enumerate}
 
-\subsection{信号的基本运算 basic operations on signals}
+\subsection{信号的基本变换 basic operations on signals}
 \subsubsection{从变量运算 operations performed on dependent variables}
 \begin{enumerate}
-    \item 
-\end{enumerate}
+    \item 幅度变换 Amplitude scaling
+    $$x(t)\rightarrow cx(t)$$
+    $$x[n]\rightarrow cx[n]$$
+    \item 叠加变换 Addition
+    $$y(t)=x_{1}(t)+x_{2}(t)$$
+    $$y(t)=x_{1}[n]+x_{2}[n]$$
+    \item 信号相乘 Multiplication
+    \item $$y(t)=x_{1}(t)\cdot x_{2}(t)$$
+    $$y(t)=x_{1}[n]\cdot x_{2}[n]$$
+    \item 连续信号微分\&离散信号差分 Differentiation
+    $$y(t)=\frac{\mathrm{d} x(t)}{\mathrm{d} x}$$
+    \item 连续信号积分\&离散信号求和 Integration
+    $$y(t)=\int_{-\infty }^{t}x(\tau )d\tau$$
+    $$y[n]=\sum_{-\infty}^{n} x[n]$$
 
+\end{enumerate}
 \subsubsection{自变量运算 operations performed on independent variables}
 \begin{enumerate}
-    \item 
+    \item 尺度展缩 Time scaling
+    $$x(t)\rightarrow x(at)$$
+    若$0<a<1$,则该变换为扩展(expand)$1/a$；
+    若$a>1$倍,则该变换为压缩(compress)$a$倍。
+    \item 时间翻转 Reflection
+    $$y(t)=x(-t)$$
+    \item 时移 Time shifting
+    $$y(t)=x(t\pm t_{0})$$
+    若为$+t_{0}$,则表示信号左移$t_{0}$单位；
+    若为$-t_{0}$,则表示信号右移$t_{0}$单位。(左加右减)
 \end{enumerate}
+综上，自变量变换的顺序为
+$$x(t) \overset{Reflection}{\rightarrow} x(-t) \overset{Time Scaling}{\rightarrow} x(-at) \overset{Time Shifting}{\rightarrow} x(-a(t\mp \frac{b}{a}))$$
 
 \subsection{基本信号 basic signals}
 \begin{enumerate}
-    \item 
+    \item 指数信号
+    \subitem 实指数信号
+    \subitem 虚指数信号
+    \subitem 复指数信号
+    \item 正弦信号
+    \item 阶跃函数\&冲激信号\&斜坡信号
+    \subitem 阶跃函数
+    \[ u(t) =
+    \begin{cases}
+        1, t>0\\
+        0, t<0
+    \end{cases} \]
+    \subitem 冲激信号
+    \subitem 斜坡信号
 \end{enumerate}
 
 \section{系统 Systems}
