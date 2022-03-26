@@ -1,5 +1,8 @@
 \documentclass[UTF8]{article}
 \usepackage{ctex}
+\usepackage{amsmath}
+% \usepackage{mathtools}
+\usepackage{amssymb}
 
 \title{\heiti 工程电磁场数学基础}
 \author{\kaishu 庄梓伸}
@@ -13,13 +16,70 @@
 在不同的分类标准下，根据场有无方向分为标量场和矢量场，根据物理量是否随时间变化分为稳定场和时变场。
 
 \section{场中的元}
-\subparagraph{数量场的等值面}
-\subparagraph{矢量场的矢量线}
+\subsection{标量场的等值面}
+在标量场中，我们只关心标量的大小，因此我们找出空间标量场中任意一点的函数值相等的一个面，我们称这个面为等值面，其方程为
+\begin{equation}
+    \varphi (x, y, z)=C
+\end{equation}
+而在平面标量场中，我们有称其为等值线$\varphi (x, y)=C$。
+
+\subsection{矢量场的矢量线}
+在矢量场中，我们更关心矢量的方向，因此我们找出一条与矢量方向重合的一条线，称为矢量线。
+
+现在已知矢量场$\vec{A}$的方程
+\begin{equation}
+    \vec{A} = \vec{A_{x}}\cdot \vec{e_{x}}+\vec{A_{y}}\cdot \vec{e_{y}}+\vec{A_{z}}\cdot \vec{e_{z}}
+\end{equation}
+又有空间中的任一矢量
+\begin{equation}
+    \vec{A} = dx\cdot \vec{e_{x}}+dy\cdot \vec{e_{y}}+dz\cdot \vec{e_{z}}
+\end{equation}
+由(1)和(2)联立可得矢量线的方程
+\begin{equation}
+    \frac{dx}{\vec{A_{x}}}=\frac{dy}{\vec{A_{y}}}=\frac{dz}{\vec{A_{z}}}
+\end{equation}
 
 \section{场的度量}
-\subparagraph{数量场的梯度}
-\subparagraph{矢量场的散度}
-\subparagraph{矢量场的旋度}
+\subsection{标量场的方向导数和梯度}
+工程上，我们常需要探究标量场中的标量沿场的变化率，并找出变化率最大的那个值。
+因此，我们定义标量场中两标量点间沿$\vec{l}$的变化率为{\heiti 方向导数}，记作$\frac{\partial \vec u}{\partial \vec l}$。
+
+由$\vec{l} = cos\alpha \cdot \vec{e_{x}}+cos\beta \cdot \vec{e_{y}}+cos\gamma \cdot \vec{e_{z}}$，
+我们可以得到M点沿$\vec{l}$的方向导数
+\begin{equation}
+    \left. \frac{\partial \vec u}{\partial \vec l} \right|_{M} = 
+    \frac{\partial u}{\partial x} \cdot cos\alpha+\frac{\partial u}{\partial y} \cdot cos\beta+\frac{\partial u}{\partial x} \cdot cos\gamma
+\end{equation}
+然后我们探究方向导数的最值，结合$\vec{l}$的定义式分析，以及场点沿各方向的方向导数为
+\begin{equation}
+    \vec{g} = 
+    \frac{\partial u}{\partial x} \cdot \vec{e_{x}}+\frac{\partial u}{\partial y} \cdot  \vec{e_{y}}+\frac{\partial u}{\partial x} \cdot \vec{e_{z}}
+\end{equation}
+我们可以将方向导数的影响因素分为两个：内因$\vec{l}$和外因$\vec{g}$，因此
+\begin{equation}
+    \frac{\partial \vec u}{\partial \vec l} = \vec{g} \cdot \vec{l}
+\end{equation}
+观察可得$\frac{\partial \vec u}{\partial \vec l}$决定于$\vec{g}$在$\vec{l}$上的投影。
+当$\vec{g}$与$\vec{l}$方向一致时，该点沿$\vec{l}$的方向导数最大，我们将方向导数的最大值称为{\heiti 梯度}，记作$grad u$
+\begin{equation}
+    grad u = \vec{g} = 
+    \frac{\partial u}{\partial x} \cdot \vec{e_{x}}+\frac{\partial u}{\partial y} \cdot  \vec{e_{y}}+\frac{\partial u}{\partial x} \cdot \vec{e_{z}}
+\end{equation}
+并且通过分析可场点的切线方向的方向导数为0，判断{\heiti 梯度的方向与场点切线方向垂直}。
+
+为了更加方便的表示梯度，我们引入数学上的哈密顿算子
+\begin{equation}
+    \triangledown = 
+    \frac{\partial}{\partial x} \cdot \vec{e_{x}}+\frac{\partial}{\partial y} \cdot  \vec{e_{y}}+\frac{\partial}{\partial x} \cdot \vec{e_{z}}
+\end{equation}
+因此可得梯度的表达式
+\begin{equation}
+    grad u = \triangledown u =
+    \frac{\partial u}{\partial x} \cdot \vec{e_{x}}+\frac{\partial u}{\partial y} \cdot  \vec{e_{y}}+\frac{\partial u}{\partial x} \cdot \vec{e_{z}}
+\end{equation}
+
+\subsection{矢量场的通量和散度}
+\subsection{矢量场的环量和旋度}
 
 \section{重要公式}
 
