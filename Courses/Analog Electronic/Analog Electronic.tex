@@ -36,6 +36,82 @@
     \caption{三极管放大状态电流}
     \label{fig:label}
 \end{figure}
+
+\subsubsection{三端电流产生过程}
+
+
+\subsubsection{三极管的组态与电流关系}
+由于放大电路均可抽象为一个二端口网络，对于三极管，我们同样将其抽象为以下三种二端口网络：
+\begin{comment}
+\begin{figure}[ht]
+    
+    \centering
+    \includegraphics[scale=0.3]{}
+    \caption{三极管组态}
+    \label{fig:label}
+\end{figure}
+\end{comment}
+此时，我们研究三种组态输入和输出端电流的关系：
+\begin{enumerate}
+    \item 共基极放大电路
+    
+    由上述三段电流产生过程，我们已知$I_{CN}$电流的产生是由于发射极电子的漂移造成的，因此我们定义
+    \begin{equation}
+        \overline{\alpha} = \frac{I_{CN}}{I_{E}}
+    \end{equation}
+    $\overline{\alpha}$称为{\heiti 共基极电流放大倍数}，该值只与基极载流子掺杂浓度和元件尺寸有关，与外加电压无关。
+
+    又由$I_{CN}=I_{C}-I_{CBO}$，我们可以得到$I_{E}$与$I_{C}$之间的关系
+    \begin{equation}
+        I_{C} = \overline{\alpha}I_{E}+I_{CBO}
+    \end{equation}
+    由于$I_{CBO}$远小于$\overline{\alpha}I_{E}$，因此共基极放大电路的电流关系近似为
+    \begin{equation}
+        I_{C} \approx  \overline{\alpha}I_{E}
+    \end{equation} 
+
+    \item 共射极放大电路
+    
+    由$I_{E}=I_{B}+I_{C}$与上述$I_{E}$与$I_{C}$之间的关系式，可得$I_{B}$与$I_{C}$之间的关系
+    \begin{equation}
+        I_{C} = \frac{\overline{\alpha}}{1-\overline{\alpha}}I_{B}+\frac{1}{1-\overline{\alpha}}I_{CBO}
+    \end{equation}
+    我们取
+    \begin{equation}
+        \overline{\beta} = \frac{\overline{\alpha}}{1-\overline{\alpha}}
+    \end{equation}
+    \begin{equation}
+        I_{CEO} = \frac{1}{1-\overline{\alpha}}I_{CBO}
+    \end{equation}
+    $\overline{\beta}$称为{\heiti 共射极电流放大倍数}，
+    $I_{CEO}$为集电极与发射极的反向饱和电流，称为穿透电流。
+    同样的，我们忽略穿透电流，可以得到共射极放大电路的电流关系如下
+    \begin{equation}
+        I_{C} \approx  \overline{\beta}I_{B}
+    \end{equation} 
+
+    \item 共集电极放大电路
+    
+    由$I_{E}=I_{B}+I_{C}$与上述$I_{B}$与$I_{C}$之间的关系式，可得$I_{E}$与$I_{B}$之间的关系
+    \begin{equation}
+        I_{E} =  (1+\overline{\beta})I_{B}
+    \end{equation}
+
+\end{enumerate}
+
+\subsubsection{放大原理的应用}
+从三极管的电流关系我们可以看出，三极管的放大作用，体现在对电流的控制，但我们仍看不出三极管的放大功能
+下面我们将三极管放入电路中
+\begin{comment}
+    \begin{figure}[ht]
+        
+        \centering
+        \includegraphics[scale=0.3]{}
+        \caption{三极管放大电路应用}
+        \label{fig:label}
+    \end{figure}
+\end{comment}
+
 \begin{comment}
 \thispagestyle{empty}
 % 流程图定义基本形状
