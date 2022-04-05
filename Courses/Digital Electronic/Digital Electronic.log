@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  3 APR 2022 21:33
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  5 APR 2022 16:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -536,20 +536,35 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 15.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 15.
+
+LaTeX Font Warning: Font shape `TU/ppl/b/n' undefined
+(Font)              using `TU/ppl/m/n' instead on input line 17.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.53937> on input line 31.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 31.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 31.
 [1
 
-] (./Digital Electronic.aux)
+]
+Overfull \hbox (13.33882pt too wide) detected at line 64
+\OT1/cmr/m/n/10.53937 6 \OMS/cmsy/m/n/10.53937 ^^@ \OT1/cmr/m/n/10.53937 4 = 6 + (\OMS/cmsy/m/n/10.53937 ^^@\OT1/cmr/m/n/10.53937 4) = 6 + (256 \OMS/cmsy/m/n/10.53937 ^^@ \OT1/cmr/m/n/10.53937 4) = 6 + 252 = 00000110 + 11111100 = 00000010 = 2
+ []
+
+[2] (./Digital Electronic.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 17455 strings out of 476919
- 422224 string characters out of 5825424
- 728921 words of memory out of 5000000
- 37147 multiletter control sequences out of 15000+600000
- 406318 words of font info for 55 fonts, out of 8000000 for 9000
+ 17615 strings out of 476919
+ 433306 string characters out of 5825424
+ 747921 words of memory out of 5000000
+ 37297 multiletter control sequences out of 15000+600000
+ 407298 words of font info for 66 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  101i,6n,104p,511b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Digital Electronic.pdf (1 page).
+Output written on Digital Electronic.pdf (2 pages).
