@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  5 APR 2022 16:43
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  6 APR 2022 11:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -553,18 +553,18 @@ Overfull \hbox (13.33882pt too wide) detected at line 64
 \OT1/cmr/m/n/10.53937 6 \OMS/cmsy/m/n/10.53937 ^^@ \OT1/cmr/m/n/10.53937 4 = 6 + (\OMS/cmsy/m/n/10.53937 ^^@\OT1/cmr/m/n/10.53937 4) = 6 + (256 \OMS/cmsy/m/n/10.53937 ^^@ \OT1/cmr/m/n/10.53937 4) = 6 + 252 = 00000110 + 11111100 = 00000010 = 2
  []
 
-[2] (./Digital Electronic.aux)
+[2] [3] (./Digital Electronic.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 17615 strings out of 476919
- 433306 string characters out of 5825424
- 747921 words of memory out of 5000000
- 37297 multiletter control sequences out of 15000+600000
+ 17604 strings out of 476919
+ 432439 string characters out of 5825424
+ 748921 words of memory out of 5000000
+ 37286 multiletter control sequences out of 15000+600000
  407298 words of font info for 66 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  101i,6n,104p,511b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Digital Electronic.pdf (2 pages).
+Output written on Digital Electronic.pdf (3 pages).
