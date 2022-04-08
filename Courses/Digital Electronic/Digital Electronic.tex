@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{palatino}
 \usepackage{tikz}
+\usepackage{float}
 \usetikzlibrary{shapes.geometric, arrows}
 
 \title{\heiti 数字电子技术基础}
@@ -13,12 +14,44 @@
 
 \begin{document}
 \maketitle
+%目录
+\newpage
+\begin{center}
+\tableofcontents
+\end{center}
+%设置起始页
+\setcounter{page}{0}
+\thispagestyle{empty}
 
+%第一章部分
 \section{数制与码制}
 
-\subsection{数制}
+\subsection{数制——进制数}
 
 \subsection{码制}
+
+\subsubsection{BCD码}
+
+    \begin{table}[H] %取消浮动
+        \centering
+        \begin{tabular}{|l|c|c|c|p{2.5cm}}
+        \hline
+        8421BCD & 余三码  & BCD & BCD\\
+        \hline
+        0000    & 0011 & 243 & 34\\
+        \hline
+                &      &     &\\
+        \hline
+                &      &     &\\
+        \hline
+        \end{tabular}
+        \caption{BCD码}
+        \label{tab:my-table}
+    \end{table}
+
+\subsubsection{校验码}
+
+\subsubsection{ASCII码}
 
 \subsection{二进制的数制问题解决}
 下面将通过计算机对数的处理方式进行讲述，
@@ -73,6 +106,8 @@ $$6-4=6+(-4)=6+(256-4)=6+252
 
 至此，我们通过补码表示法也完美的解决了负数在计算机中的所有问题。
 
+
+%第二部分
 \section{逻辑代数基础}
 
 \subsection{逻辑运算}
@@ -93,5 +128,38 @@ $$6-4=6+(-4)=6+(256-4)=6+252
         \subitem 含有无关项的卡诺图
         
 \end{enumerate}
+
+
+%第三部分
+\section{数字电路分析与设计思路}
+
+我们根据数字系统的逻辑功能和电路结构，将数字电路分为：组合逻辑电路和时序逻辑电路。
+%（待补充：组合逻辑电路与时序逻辑电路的区别）
+
+\subsection{组合逻辑电路}
+%（待补充：组合逻辑电路的定义）
+
+\subsubsection{组合逻辑电路的分析}
+
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\subsubsection{组合逻辑电路的设计思路}
+
+\subsection{时序逻辑电路}
+
+
+\section{组合逻辑电路的电路模块与应用}
+
+\subsection{编码器}
+    \begin{enumerate}
+        \item 二进制编码器
+            \subitem 3位二进制编码器
+            \subitem 优先编码器 
+        \item 二-十进制编码器
+    \end{enumerate}
+
+\subsection{}
 
 \end{document}
