@@ -20,4 +20,7 @@
 \contentsline {subsection}{\numberline {3.2}时序逻辑电路}{4}{}%
 \contentsline {section}{\numberline {4}组合逻辑电路的电路模块与应用}{4}{}%
 \contentsline {subsection}{\numberline {4.1}编码器}{4}{}%
-\contentsline {subsection}{\numberline {4.2}}{4}{}%
+\contentsline {subsection}{\numberline {4.2}译码器}{8}{}%
+\contentsline {subsection}{\numberline {4.3}数据选择器}{8}{}%
+\contentsline {subsection}{\numberline {4.4}数值比较器}{8}{}%
+\contentsline {subsection}{\numberline {4.5}加法器}{8}{}%
