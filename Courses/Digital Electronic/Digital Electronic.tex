@@ -1,7 +1,7 @@
 \documentclass[UTF8]{article}
 \usepackage{ctex}
 \usepackage{verbatim}
-%\usepackage{amsmath}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{palatino}
 \usepackage{tikz}
@@ -153,13 +153,130 @@ $$6-4=6+(-4)=6+(256-4)=6+252
 \section{组合逻辑电路的电路模块与应用}
 
 \subsection{编码器}
+将输入的有效信号，转换为电平信号的形式，再产生二进制代码与其对应的逻辑电路模块。
     \begin{enumerate}
         \item 二进制编码器
-            \subitem 3位二进制编码器
-            \subitem 优先编码器 
+        
+        用n位二进制代码对$2^{n}$个信号进行编码的电路
+            \subitem {\heiti 普通编码器}
+
+                我们常用的普通编码器有8线-3线编码器，也即有8个输入端，3个输出端的电路。
+                我们规定在任意时刻，其输入仅有一个取值为1，且其输入与输出一一对应。其真值表如下：
+
+                \begin{figure}[H]
+    
+                    \centering
+                    \includegraphics[scale=0.4]{Pic/8线3线编码器真值表.jpg}
+                    \caption{8线-3线编码器真值表}
+                    \label{fig:label}
+                \end{figure}
+
+                根据真值表我们可以写出$B_{2}$、$B_{2}$、$B_{2}$的表达式，举例$B_{2}$的一个最小项如下：
+                $$\overline{A_{0}}\cdot\overline{A_{1}}\cdot\overline{A_{2}}\cdot\overline{A_{3}}\cdot A_{4}\cdot \overline{A_{5}}\cdot \overline{A_{6}}\cdot \overline{A_{7}}$$
+                该最小项与其他无关项合并最后可得
+                $$A_{4}$$
+                同理，我们可以得到
+                \begin{equation}
+                    B_{2} = A_{4}+A_{5}+A_{6}+A_{7}
+                \end{equation}
+                同理，我们又可得另外两个输出，
+                \begin{equation}
+                    B_{1} = A_{2}+A_{3}+A_{6}+A_{7}
+                \end{equation}
+                \begin{equation}
+                    B_{0} = A_{1}+A_{3}+A_{5}+A_{7}
+                \end{equation}
+                其逻辑电路如下：
+
+                \begin{figure}[H]
+    
+                    \centering
+                    \includegraphics[scale=0.5]{Pic/8线3线编码器逻辑电路.png}
+                    \caption{8线-3线编码器逻辑电路}
+                    \label{fig:label}
+                \end{figure}
+            
+            
+            \subitem {\heiti 优先编码器}
+
+                上述的普通编码器虽然达到了编码控制电路的目的，但是任意时刻仅允许一个输入信号有效。
+                然而对于我们常见的应用场景，我们往往需要多个有效输入信号，因此我们通过给所有信号赋予优先顺序，
+                当多个信号有效时，仅对优先级最高的信号进行编码。于是，我们将按优先级从高至低排列，有以下编码方式：
+                
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[scale=0.8]{Pic/优先编码器引言.png}
+                    \caption{引入优先级编码方式}
+                    \label{fig:label}
+                \end{figure}
+                从真值表我们可以看出有三组不同的输入有相同的输出，不符合编码器的输入输出唯一性，实际使用会产生异常。
+                因此，我们再引入一个输入端口，称为使能输入端，该端口输入的信号称为选通信号，记为$S$(select)。
+
+                我们将允许多个有效信号输入的编码器称为优先编码器。我们常用的74LS148就是一种8线-3线优先编码器，其真值表如下：
+
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[scale=0.3]{Pic/优先编码器真值表.jpg}
+                    \caption{74LS148真值表}
+                    \label{fig:label}
+                \end{figure}
+
+                其逻辑图如下：
+                
+                %缺图
+
+                从真值表我们可以得到{\heiti 74LS148}的输入输出端都是{\heiti 低电平有效}，且可以得到以下表达式：
+                \begin{equation}
+                    \begin{aligned}
+                        F_{2} 
+                        & =S\cdot I_{7}+S\cdot I_{6}\cdot \overline{I_{7}}+S\cdot I_{5}\cdot \overline{I_{6}}\cdot \overline{I_{7}}+S\cdot I_{4}\cdot \overline{I_{5}}\cdot \overline{I_{6}}\cdot \overline{I_{7}} \\
+                        &=S\cdot (I_{7}+I_{6}+I_{5}+I_{4})
+                    \end{aligned}
+                \end{equation}
+                可以看出，{\heiti 当选通信号$\overline{S}=0$时，其他输入可以正常工作；
+                当$\overline{S}=1$时，其他输出被封锁，输出均为高电平。}
+
+                从逻辑图可以得到$F_{S}$和$\overline{F_{EX}}$的表达式：
+                \begin{equation}
+                    \begin{aligned}
+                        F_{S}&=I_{0}+I_{1}+I_{2}+...+I_{7}+\overline{S}\\
+                        &=\overline{\overline{I_{0}}\cdot \overline{I_{1}}\cdot \overline{I_{2}}\cdot ...\cdot\overline{I_{7}}\cdot S}\\
+                        &=\overline{\overline{I_{0}+I_{1}+I_{2}+...+I_{7}}\cdot S}
+                    \end{aligned}
+                \end{equation}
+
+                \begin{equation}
+                    \begin{aligned}
+                        \overline{F_{EX}}&=\overline{F_{S}\cdot S}\\
+                        &=\overline{S}+S\cdot \overline{I_{0}+I_{1}+I_{2}+...+I_{7}}\\
+                        &=\overline{S}+\overline{I_{0}+I_{1}+I_{2}+...+I_{7}}\\
+                        &=\overline{S\cdot (I_{0}+I_{1}+I_{2}+...+I_{7})}
+                    \end{aligned}
+                \end{equation}
+
+                从(5)的表达式中，我们可以得知
+                只有当$\overline{S}=0$，也即其他输入正常工作，
+                且不存在有效信号时，$F_{S}$才输出为低电平。
+                因此，{\heiti $F_{S}$输出低电平表示该电路正常工作，且无有效信号输入。}
+                我们称$F_{S}$为{\heiti 使能输出端}。
+
+                从(6)的表达式中，我们可以得知
+                只有当$\overline{S}=0$，也即其他输入正常工作，
+                且存在有效信号时，$F_{EX}$才输出为低电平。
+                因此，{\heiti $F_{EX}$输出低电平表示该电路正常工作，且存在有效信号输入。}
+                我们称$F_{EX}$为{\heiti 扩展输出端}。
+
+
         \item 二-十进制编码器
+        
     \end{enumerate}
 
-\subsection{}
+\subsection{译码器}
+
+\subsection{数据选择器}
+
+\subsection{数值比较器}
+
+\subsection{加法器}
 
 \end{document}
