@@ -1,6 +1,14 @@
-# 工程文件创建
+# STM32
 
-## 工程结构解读
+## CMSIS标准
+
+## STM32开发方式
+
+## 工程文件创建
+
+### 寄存器版本
+
+#### 工程结构解读
 
 1. startup_stm32f10x_hd.s
 
@@ -10,11 +18,10 @@
 * 调用SystemInit()
 * 设置C库的分支入口"__main"
 
-## 寄存器版本
+#### 创建过程
+参见《STM32库开发实战指南》第6章
 
-### 参见《STM32库开发实战指南》第6章
-
-### 遇到的bug
+#### 遇到的bug
 
 1. test.axf: Error: L6218E: Undefined symbol SystemInit (referred from startup_stm32f10x_hd.o).`
 
@@ -45,3 +52,5 @@ ENDP
 第二种情况：如果在建立工程时未把main.c或是写main函数的文件添加到工程文件；
 
 第三种情况：未编写main函数时也会出现。
+
+### 标准库版本（固件库版本）
