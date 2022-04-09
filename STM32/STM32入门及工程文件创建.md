@@ -2,12 +2,6 @@
 
 ## CMSIS标准
 
-为了解决不同厂商生产的基于Cortex内核的微控制器软件兼容性问题，ARM与芯片厂商建立了CMSIS标准(Cortex MicroController Software Interface Standard)，如图。
-
-![CMSIS架构](./STM32_Pic/CMSIS架构.png)
-
-*CMSIS架构*
-
 ## STM32开发方式
 
 ## 工程文件创建
@@ -60,7 +54,3 @@ ENDP
 第三种情况：未编写main函数时也会出现。
 
 ### 标准库版本（固件库版本）
-
-#### 工程文件结构
-## 参考文献
-[1] [CSDN:No.2 STM32F429IGT6 固件库 CMSIS标准及库和STM32官方文档资料总结 （STM32F429/F767/H743）](https://blog.csdn.net/weixin_51218153/article/details/123465937?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164953031416780269846659%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=164953031416780269846659&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-12-123465937.142^v7^control,157^v4^control&utm_term=CMSIS%E6%9E%B6%E6%9E%84STM32&spm=1018.2226.3001.4187)
