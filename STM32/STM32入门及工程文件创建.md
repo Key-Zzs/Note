@@ -4,7 +4,7 @@
 
 为了解决不同厂商生产的Cortex微控制器软件的兼容性问题，ARM与芯片厂商建立了CMSIS标准(Cortex MicroController Software Standard)，其架构如图。
 
-![](STM32_Pic/CMSIS架构.png)
+<img src="./STM32_Pic/CMSIS架构.png"/>
 
 *CMSIS架构*
 
