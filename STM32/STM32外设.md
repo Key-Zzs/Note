@@ -502,10 +502,6 @@ EXTI具有两大功能：产生中断与产生事件。
 
 <div STYLE="page-break-after: always;"></div>
 
-### DMA
-
-<div STYLE="page-break-after: always;"></div>
-
 ## 通信外设
 
 * 通信方式的类型
@@ -535,10 +531,33 @@ EXTI具有两大功能：产生中断与产生事件。
 
   * 同步、异步
 
-    
+    同步通信，正如打电话；而异步通信，正如发短信。那么控制器是如何实现这一功能的呢？
+
+    在同步通信中，收发设备双方会使用一根信号线表示时钟信号，在时钟信号的驱动下双方进行协调，同步数据。两设备通过协议层统一规定在时钟信号的上升沿或下降沿对数据线进行采样，如下图。
+
+    ![](STM32_Pic/同步通信.png)
+
+    *同步通信*
+
+    而异步通信则舍去了同步通信的时钟信号线，取而代之的是在数据传输中插入不同的标志位，以统一数据的传输过程
+
+    ![](STM32_Pic/异步通信.png)
+
+    *异步通信*
+
+    ![](STM32_Pic/异步通信字符帧方式.png)
 
 ### UART/USART
+
+* 串口通信协议
+
+    * 物理层
+    * 协议层
+
 #### UART简介
+
+#### 工作原理
+
 
 ### I2C
 
@@ -546,6 +565,14 @@ EXTI具有两大功能：产生中断与产生事件。
 ### SPI
 
 
+### DMA
 
 <div STYLE="page-break-after: always;"></div>
+
+## 参考文献
+
+[1] <a name = "ref1" href="https://www.cnblogs.com/The-explosion/p/11587930.html">USART串口协议</a>
+
+[2] <a name = "ref2" href="https://blog.csdn.net/sym_robot/article/details/113182977?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164969034716780269881632%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=164969034716780269881632&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-113182977.142^v7^control,157^v4^control&utm_term=%E4%B8%B2%E8%A1%8C%E9%80%9A%E4%BF%A1%E5%92%8C%E5%B9%B6%E8%A1%8C%E9%80%9A%E4%BF%A1&spm=1018.2226.3001.4187">串口通信基础（一）——串行与并行通信，同步与异步通信</a>
+
 
