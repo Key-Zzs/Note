@@ -132,9 +132,31 @@ $$x(t) \overset{Reflection}{\rightarrow} x(-t) \overset{Time Scaling}{\rightarro
 \subsection{基本信号 basic signals}
 \begin{enumerate}
     \item 指数信号
-    \subitem 实指数信号
-    \subitem 虚指数信号
-    \subitem 复指数信号
+    
+        \begin{equation}
+            x(t) = A e^{Ct}
+        \end{equation}
+        (8)中$A$和$C$代指常数，根据$C$的数值类型分为以下三种：
+        
+        \subitem {\heiti 实指数信号} 
+
+            \begin{equation}
+                x(t) = B e^{\sigma t}
+                \tag{8.1}
+            \end{equation}
+
+        \subitem {\heiti 虚指数信号}
+
+            \begin{equation}
+                x(t) = A e^{jw_{0}t}
+            \end{equation}
+
+            由欧拉公式可化简得，
+            $$x(t) = 2A\cos(w_{0}t)+$$
+            由化简式可知虚指数信号是周期信号，基本周期
+            $T_{0}=\frac{2\pi}{\left | \omega_{0} \right |}$
+
+        \subitem {\heiti 复指数信号}
     \item 正弦信号
     \item 阶跃函数\&冲激信号\&斜坡信号
     \subitem 阶跃函数
