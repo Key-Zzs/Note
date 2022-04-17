@@ -1,6 +1,7 @@
 \documentclass[UTF8]{article}
 \usepackage{ctex}
 \usepackage{amsmath}
+\usepackage{graphicx}
 
 \title{\heiti Signals and Systems}
 \author{\heiti Zishen Zhuang}
@@ -52,6 +53,7 @@
     所以$x(t)=sin2t+cos\pi t$不是周期信号。
     
     \item 确定信号\&随机信号(Deterministic and Random Signals)
+    
     \item 能量信号\&功率信号(Energy and Power Signals)
     
     在介绍能量信号与功率信号之前，我们要清楚信号的能量(Signal Energy)与功率(Signal Power)的定义。
@@ -98,36 +100,48 @@
 \subsubsection{从变量运算 operations performed on dependent variables}
 \begin{enumerate}
     \item 幅度变换 Amplitude scaling
-    $$x(t)\rightarrow cx(t)$$
-    $$x[n]\rightarrow cx[n]$$
+        $$x(t)\rightarrow cx(t)$$
+        $$x[n]\rightarrow cx[n]$$
     \item 叠加变换 Addition
-    $$y(t)=x_{1}(t)+x_{2}(t)$$
-    $$y(t)=x_{1}[n]+x_{2}[n]$$
+        $$y(t)=x_{1}(t)+x_{2}(t)$$
+        $$y(t)=x_{1}[n]+x_{2}[n]$$
     \item 信号相乘 Multiplication
-    \item $$y(t)=x_{1}(t)\cdot x_{2}(t)$$
-    $$y(t)=x_{1}[n]\cdot x_{2}[n]$$
+        $$y(t)=x_{1}(t)\cdot x_{2}(t)$$
+        $$y(t)=x_{1}[n]\cdot x_{2}[n]$$
     \item 连续信号微分\&离散信号差分 Differentiation
-    $$y(t)=\frac{\mathrm{d} x(t)}{\mathrm{d} x}$$
+        $$y(t)=\frac{\mathrm{d} x(t)}{\mathrm{d} x}$$
     \item 连续信号积分\&离散信号求和 Integration
-    $$y(t)=\int_{-\infty }^{t}x(\tau )d\tau$$
-    $$y[n]=\sum_{-\infty}^{n} x[n]$$
+        $$y(t)=\int_{-\infty }^{t}x(\tau )d\tau$$
+        $$y[n]=\sum_{-\infty}^{n} x[n]$$
 
 \end{enumerate}
 \subsubsection{自变量运算 operations performed on independent variables}
 \begin{enumerate}
     \item 尺度展缩 Time scaling
-    $$x(t)\rightarrow x(at)$$
-    若$0<a<1$,则该变换为扩展(expand)$1/a$；
-    若$a>1$倍,则该变换为压缩(compress)$a$倍。
+        $$x(t)\rightarrow x(at)$$
+        若$0<a<1$,则该变换为扩展(expand)$1/a$；
+        若$a>1$倍,则该变换为压缩(compress)$a$倍。
     \item 时间翻转 Reflection
-    $$y(t)=x(-t)$$
+        $$y(t)=x(-t)$$
     \item 时移 Time shifting
-    $$y(t)=x(t\pm t_{0})$$
-    若为$+t_{0}$,则表示信号左移$t_{0}$单位；
-    若为$-t_{0}$,则表示信号右移$t_{0}$单位。(左加右减)
+        $$y(t)=x(t\pm t_{0})$$
+        若为$+t_{0}$,则表示信号左移$t_{0}$单位；
+        若为$-t_{0}$,则表示信号右移$t_{0}$单位。(左加右减)
 \end{enumerate}
 综上，自变量变换的顺序为
 $$x(t) \overset{Reflection}{\rightarrow} x(-t) \overset{Time Scaling}{\rightarrow} x(-at) \overset{Time Shifting}{\rightarrow} x(-a(t\mp \frac{b}{a}))$$
+
+\subparagraph{例题 1.3.1}
+
+    已知信号的波形如题1.9围所示，分别写出$f(x)$和$\frac{\mathrm{d} f(t)}{\mathrm{d} t}$。
+
+    \begin{figure}[ht]
+    
+        \centering
+        \includegraphics[scale=1.0]{Pic/例1.3.1图1.png}
+        \caption{例1.3.1}
+        \label{fig:label}
+    \end{figure}
 
 \subsection{基本信号 basic signals}
 \begin{enumerate}
@@ -158,15 +172,47 @@ $$x(t) \overset{Reflection}{\rightarrow} x(-t) \overset{Time Scaling}{\rightarro
 
         \subitem {\heiti 复指数信号}
     \item 正弦信号
-    \item 阶跃函数\&冲激信号\&斜坡信号
-    \subitem 阶跃函数
-    \[ u(t) =
-    \begin{cases}
-        1, t>0\\
-        0, t<0
-    \end{cases} \]
-    \subitem 冲激信号
-    \subitem 斜坡信号
+    
+        \subparagraph{判断正弦离散信号的周期性}
+
+            具体正弦序列有以下三种情况：
+            % 复制OCR的，记得重排！！！
+
+            (1) 当2r/ w 。为整数时， k =1，正弦序列是以2r/ w ，为周期的周期序列。例如， sin (풍 n ), a 晋，禁＝16，该正弦序列周期为16。
+            
+            (2) 2n/ wo 。不是整数，是一个有理数时，设2n/ ap = P / Q ，式中 P 、Q 是互为素数的整数，取 k = Q ，那么 N = P ，则该正弦序列是以 P 为周期的周期序列。例如， sin (4n/5),2n/ a ,=5/2, k =2，该正弦序列是以5为周期的周期序列。
+            
+            (3) 2n/ w ，是无理数，任何整数 k 都不能使 N 为正整数，因此，此时的正弦序列不是周期序列。例如， o 1/4, sin ( on ）即不是周期序列。
+
+        \subparagraph{判断正弦组合信号的周期性}
+            
+            分别求出各信号的周期
+
+
+    \item 阶跃信号\&冲激信号\&斜坡信号
+        \subitem {\heiti 冲激信号与阶跃信号}
+            \[ u(t) =
+            \begin{cases}
+                1, t>0\\
+                0, t<0
+            \end{cases} \]
+
+        \subitem {\heiti 冲激信号与其导数——冲激偶信号}
+        \subitem {\heiti 斜坡信号与阶跃信号}
+
+        因此综上述，我们可以得到冲激偶函数、冲激函数、阶跃函数和斜坡函数之间的关系如下：
+
+        \subparagraph{例题 1.3.1——信号的组合表示}
+
+            $f(t)$波形如图所示，其表达式为()。
+
+        \subparagraph{例题 1.3.2——冲激\&阶跃函数性质}
+
+            $$f(t)=\int_{-\infty }^{\infty }\frac{\sin(\pi t)}{t}\delta(t) dt$$
+
+            利用冲激函数的取样特性
+            
+            
 \end{enumerate}
 
 \section{系统 Systems}
