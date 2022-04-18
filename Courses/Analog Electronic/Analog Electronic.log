@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  11 APR 2022 01:17
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/W32TeX) (preloaded format=xelatex 2022.3.18)  18 APR 2022 10:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -559,7 +559,7 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  17583 strings out of 476919
  430099 string characters out of 5825424
- 740918 words of memory out of 5000000
+ 740919 words of memory out of 5000000
  37261 multiletter control sequences out of 15000+600000
  407298 words of font info for 66 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
