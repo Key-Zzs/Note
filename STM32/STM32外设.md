@@ -118,7 +118,7 @@ GPIO，全称 通用输入输出（General Purpose Input/Output）。通过GPIO�
     /* 初始化GPIO引脚 */
     GPIO_InitTypeDef  GPIO_InitStructure;                   //开启GPIO初始化的结构体
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);   //使能APB2下的PORTA端口时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);   //使能APB2下的PORTC端口时钟
 	
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;               //PC13端口配置
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;        //配置为推挽输出
@@ -129,7 +129,7 @@ GPIO，全称 通用输入输出（General Purpose Input/Output）。通过GPIO�
     ```c
     /* GPIO操作 */
     GPIO_SetBits(GPIOC,GPIO_Pin_13);	                        //PC13 输出高
-    GPIO_ResetBits(GPIOC,GPIO_Pin_13);	                        //PC13 输出高
+    GPIO_ResetBits(GPIOC,GPIO_Pin_13);	                        //PC13 输出低
     ```
 
 3. HAL库操作
@@ -564,6 +564,9 @@ UART全称为通用异步收发器(Universal Asynchronous Reveier and Transmitte
 
 2. 标准库操作
 
+```c
+
+```
 
 3. HAL库操作
 

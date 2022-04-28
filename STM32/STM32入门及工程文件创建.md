@@ -2,9 +2,9 @@
 
 ## CMSIS标准
 
-为了解决不同厂商生产的Cortex微控制器软件的兼容性问题，ARM与芯片厂商建立了CMSIS标准(Cortex MicroController Software Standard)，其架构如图。
+为了解决不同厂商生产的Cortex微控制器软件的兼容性问题，ARM与芯片厂商建立了CMSIS标准(Cortex MicroController Software Standard)，其架构如图[<sup>1</sup>](#refer1)。
 
-![](STM32_Pic/CMSIS架构.png)
+![](STM32_Pic/CMSIS架构1.png)
 
 *CMSIS架构*
 
@@ -65,8 +65,55 @@ ENDP
 
 #### 工程文件结构
 
+| 名称 | 用途 |
+| - | :- |
+| startup_stm32f10x_hd.s |  |
+
+#### 创建过程
+
+1. 新建本地工程文件，添加工程文件如下
+```
+Template_ Standard
+└───Doc
+│   │   file011.txt
+└───Lib
+│   └───CMSIS
+│       │   file111.txt
+│       │   file112.txt
+│       │   ...
+│   └───STM32F10x_StdPeriph_Driver
+│       │   file111.txt
+│       │   file112.txt
+│       │   ...
+└───User
+    │   file021.txt
+    │   file022.txt
+    │   ...
+└───
+```
+2. 进入keil添加工程文件
 
 
+#### 遇到的bug
+
+1. ../Lib/CMSIS/CM3/DeviceSupport/ST/STM32F10x\stm32f10x.h(317): error: redefinition of enumerator 'I2C2_ER_IRQn'
+
+在C/C++选项卡里，把STM3210X_HD从prepocessor symbol define 里面删掉[<sup>2</sup>](#refer2)
+
+1. ../Lib/CMSIS/core_cm3.c(445): error: non-ASM statement in naked function is not supported
+
+固件库只支持版本5的编译器，修改编译器版本号[<sup>3</sup>](#refer3)
+![](STM32_Pic/固件库问题3.png)
 ## 参考文献
 
-[1] [CSDN:No.2 STM32F429IGT6 固件库 CMSIS标准及库和STM32官方文档资料总结 （STM32F429/F767/H743）](https://blog.csdn.net/weixin_51218153/article/details/123465937?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164953031416780269846659%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=164953031416780269846659&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-12-123465937.142^v7^control,157^v4^control&utm_term=CMSIS%E6%9E%B6%E6%9E%84STM32&spm=1018.2226.3001.4187)
+<div id="ref1"></div>
+
+- [1] [CSDN:No.2 STM32F429IGT6 固件库 CMSIS标准及库和STM32官方文档资料总结 （STM32F429/F767/H743）](https://blog.csdn.net/weixin_51218153/article/details/123465937)
+
+<div id="ref2"></div>
+
+- [2] [博客园:由于MDK5.0A没有STM32F103程序错误 stm32f10x.h(298): error: #67: expected a "}"](https://www.cnblogs.com/shirishiqi/p/5484973.html)
+
+<div id="ref3"></div>
+
+- [3] [CSDN:../Libraries/core_cm3.c(445): error: non-ASM statement in naked function is not supported](https://blog.csdn.net/weixin_45950842/article/details/115582153)
