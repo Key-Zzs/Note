@@ -557,18 +557,192 @@ UART全称为通用异步收发器(Universal Asynchronous Reveier and Transmitte
 
 ![](STM32_Pic/USART框图.png)
 
+其简化的工作原理图如下：
+
+![](STM32_Pic/USART工作原理简化.png)
+
+(具体流程待补充！)
+
+#### 工作模式
+
+1. 异步(Asynchronous)
+
+2. 同步(Synchronous)
+
+![](STM32_Pic/字符发送时序图.png)
+
+3. 半双工/单线(Half-Duplex/Single Wire)
+
+    有些特殊场合，我们需要使用半双工，比如驱动某些数字舵机。这时数据也是双向传递，但是同一时刻只允许一个方向的数据进行传递。这种情况下只用到Tx这一根数据线。
+
+    注：TX引脚必须设置为开漏输出且外接电阻上拉。
+
+4. 多机通信(Multiprocessor Communication)[<sup>6</sup>](#refer6)
+
+    利用USART可以进行多机处理器通信，其原理就是使从机处于静默模式，由主机在需要的时候发送指令唤醒从机，并传输数据。STM32静默模式特点：1、所有接收状态位都不会被设置；2、所有的接收中断都被禁止；3、USART_CR1寄存器中的RWU位被置1，RUW可以硬件自动控制或者在某些条件下由软件写。
+
+    连接方法很简单，主机的TX输出与从机的RX端口直接相连，从机TX端口要经过与门与主机RX端口连接。
+
+    多机通信方式有2种：空闲帧唤醒和地址唤醒。
+
+    空闲帧唤醒可以同时唤醒所有从机，在从机处于静默模式时发送空闲帧（即所有位均为1的数据），唤醒多个从机，实现多个从机同步。
+
+    地址唤醒可以唤醒单个从机，从机静默时发送地址帧，从机自动对比地址，地址配对正确则该从机唤醒，否则继续进入静默。这样只有被寻址者才被激活，来接收数据，减少由未被寻址的接收机器参与带来的多余的USART服务开销。这种模式下，MSB为1的字节被认为是地址，否则被认为是数据（MSB一般为数据传送的最高位，8位传送则MSB为第八位；9位传送则MSB为第九位）。在一个地址字节中，目标接收者的地址放在低4位。这4位会被接收器拿来和设置在USART_CR2寄存器中ADD位中的自身地址比较。当接收到一个和设置地址相匹配的地址字符时，RWU被清除，后面的字节将正常接收。因为RWU位已经被清除，RXEN位会因为接收到地址符被置1。当从机再次接收到地址符，如若地址不匹配则从机再次进入静默模式。
+
+    注：从设备采用漏极开路方式级联，从设备的串口TX必须配置为漏极开路，不能是推挽方式，如果配置成推挽方式，会导致灌电流过大，低电平低不下去问题。
+
+5. 局域互联网络(LIN)
+
+6. 智能卡()
+
+7. 红外线()
+
+- 补充一种控制模式:硬件流[<sup>4</sup>](#refer4)
+
+    数据在两个串口之间传输时，常常会出现丢失数据的现象，或者两台计算机的处理速度不同，如台式机与单片机之间的通讯，接收端数据缓冲区已满，则此时继续发送来的数据就会丢失。
+    
+    而流控制能解决这个问题，当接收端数据处理不过来时，就发出“不再接收”的信号，发送端就停止发送，直到收到“可以继续发送”的信号再发送数据。因此流控制可以控制数据传输的进程，防止数据的丢失。PC机中常用的两种流控制是硬件流控制（包括RTS/CTS、DTR/CTS等）和软件流控制XON/XOFF（继续/停止）。 下面介绍硬件流的控制方式。
+    
+    硬件流控制必须将相应的独立接口连上，用RTS/CTS（请求发送/清除发送）流控制时，应将通讯两端的RTS、CTS线对应相连，数据终端设备（如计算机）与数据通讯设备（如调制解调器）进行硬件握手。这种硬件握手方式的过程为：我们在编程时根据接收端缓冲区大小设置一个高位标志和一个低位标志，当缓冲区内数据量达到高位时，我们在接收端将CTS线置低电平，当发送端的程序检测到CTS为低后，就停止发送数据，直到接收端缓冲区的数据量低于低位而将CTS置高电平。RTS则用来标明接收设备有没有准备好接收数据。
+
+    其实我们可以简单理解一下，在发送的时候要实时监测 CTS 的电平状态，如果发现是高电平，就不会再发送新的数据，直到 CTS 检测发现已经没有高电平信号了。[<sup>5</sup>](#refer5)(而由于检测电平与数据停止发送存在时间差，我们引入RTS。)
+
+    软件流控是以特殊的字符来代表从机已经不能再接收新的数据了，基本的流程就是从机在接收数据很多的时候或主动给发送端发送一个特殊字符，当发送端接收到这个特殊字符后就不能再发送数据了。
+
+    软件流控很方便，不需要增加新的硬件，还是以前的TX、RX，但是使用了软件流控，它本身的字符也是数据，这个数据只不过是说在软件里把它设置了一个特殊的含义。如果它是一个全双工的通讯，在给另一个串口发送数据的时候如果也包含了这样一个特殊字符，对方就会误以为我让它不要再发送数据了，会有一定的概率出现错误，而硬件流控就不需要考虑这方面，只需要使用 CTS 和 RTS，所有的数据都是由硬件来操作的。[<sup>5</sup>](#refer5)
+
+
 #### 实际操作
 
 1. 寄存器操作
 
 
 2. 标准库操作
+```c
+//中断USART_IT
+#define USART_IT_PE                          ((uint16_t)0x0028)
+#define USART_IT_TXE                         ((uint16_t)0x0727)
+#define USART_IT_TC                          ((uint16_t)0x0626)
+#define USART_IT_RXNE                        ((uint16_t)0x0525)
+#define USART_IT_ORE_RX                      ((uint16_t)0x0325) /* In case interrupt is generated if the RXNEIE bit is set */
+#define USART_IT_IDLE                        ((uint16_t)0x0424)
+#define USART_IT_LBD                         ((uint16_t)0x0846)
+#define USART_IT_CTS                         ((uint16_t)0x096A)
+#define USART_IT_ERR                         ((uint16_t)0x0060)
+#define USART_IT_ORE_ER                      ((uint16_t)0x0360) /* In case interrupt is generated if the EIE bit is set */
+#define USART_IT_NE                          ((uint16_t)0x0260)
+#define USART_IT_FE                          ((uint16_t)0x0160)
+```
+
 
 ```c
+//异步全双工
+    GPIO_Config(GPIOA, GPIO_Pin_9, GPIO_Mode_AF_PP); //USART1_TX设置为复用推挽输出
+    GPIO_Config(GPIOA, GPIO_Pin_10, GPIO_Mode_IN_FLOATING); //USART1_RX设置为浮空输入
+
+    //初始化USART外设时钟：USART1时钟挂载在APB2，其他的在APB1
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 
+	
+    //初始化USART
+    USART_InitTypeDef USART_InitStruct; //声明必须在执行语句前
+	
+    USART_InitStruct.USART_BaudRate = 115200;	//配置波特率
+    USART_InitStruct.USART_WordLength = USART_WordLength_8b;	//配置数据字长
+    USART_InitStruct.USART_StopBits = USART_StopBits_1;	//配置停止位。
+    USART_InitStruct.USART_Parity = USART_Parity_No;	//配置校验位
+    USART_InitStruct.USART_HardwareFlowControl
+    USART_HardwareFlowControl_None;	//关闭硬件流控制
+    USART_InitStruct.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//配置工作模式为接收和发送
+
+    USART_Init(USART1, &USART_InitStruct);//初始化USART结构体
+
+    NVIC_Config(USART1_IRQn, 1, 1); //串口优先级配置
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE); //使能串口中断
+    USART_Cmd(USART1, ENABLE); //使能串口
+
+    //串口发送和接收(ASCII字符)
+    USART_SendData(USART1, ch);
+    ch = USART_ReceiveData(USARTx);
+
+    //中断服务函数stm32f10x_it.c
+    void USART1_IRQHandler(void){
+	    uint8_t temp;
+	    if(USART_GetITStatus(USART1, USART_IT_RXNE)!=RESET){ //数据回显
+		temp = USART_ReceiveData(USART1);
+		USART_SendData(USART1, temp);
+	    }
+    }
+```
+
+```c
+//异步半双工
+    GPIO_Config(GPIOA, GPIO_Pin_9, GPIO_Mode_AF_OD); //USART1_TX设置为复用开漏输出
+    //初始化USART外设时钟
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 
+	
+    //初始化USART
+    USART_InitTypeDef USART_InitStruct; //声明必须在执行语句前
+	
+    USART_InitStruct.USART_BaudRate = 115200;	//配置波特率
+    USART_InitStruct.USART_WordLength = USART_WordLength_8b;	//配置数据字长
+    USART_InitStruct.USART_StopBits = USART_StopBits_1;	//配置停止位。
+    USART_InitStruct.USART_Parity = USART_Parity_No;	//配置校验位
+    USART_InitStruct.USART_HardwareFlowControl
+    USART_HardwareFlowControl_None;	//关闭硬件流控制
+    USART_InitStruct.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//配置工作模式为接收和发送
+
+    USART_Init(USART1, &USART_InitStruct);//初始化USART结构体
+
+    NVIC_Config(USART1_IRQn, 1, 1); //串口优先级配置
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE); //使能串口中断
+    USART_HalfDuplexCmd(USARTx, ENABLE); //使能半双工模式
+    USART_Cmd(USART1, ENABLE); //使能串口
+
+    #define readOnly(x)	x->CR1 |= 4;	x->CR1 &= 0xFFFFFFF7;		//串口x配置为只读，CR1->RE=1, CR1->TE=0
+    #define sendOnly(x)	x->CR1 |= 8;	x->CR1 &= 0xFFFFFFFB;		//串口x配置为只写，CR1->RE=0, CR1->TE=1
+
+    //stm32f10x_it.c
+    void USART1_IRQHandler(void){
+        uint8_t temp;
+        if(USART_GetITStatus(USART1, USART_IT_RXNE)!=RESET){//数据回显
+            temp = USART_ReceiveData(USART1);
+            sendOnly(USART1);
+            USART_SendData(USART1, temp);
+        }
+    }
 
 ```
 
+```c
+//多机通信
+```
+printf()函数实际上是一个宏，最终调用的是 fputc(int ch,FILE *f)这个函数来执行输出的，所以我们需要修改这个函数，使函数向串口输出，这样当再次引用printf()函数时，printf()就是通过串口向上位机发送数据的一个函数了。[<sup>7</sup>](#refer7)
+
+```c
+//printf、getchar重定向
+#include "stdio.h"
+
+int fputc(int ch, FILE *f)
+{
+	USART_SendData(USART1,  (uint8_t) ch);
+	//等待发送完毕
+	while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET); 
+	return ch;
+}
+int fgetc(FILE *f)
+{
+		//等待串口输入数据
+		while (USART_GetFlagStatus(USARTx, USART_FLAG_RXNE) == RESET);
+
+		return (int)USART_ReceiveData(USART1);
+}
+
+```
+
+
 3. HAL库操作
+
+
 
 ### I2C
 
@@ -587,8 +761,24 @@ UART全称为通用异步收发器(Universal Asynchronous Reveier and Transmitte
 
 <div id="ref2"></div>
 
-- [2] [串口通信基础（一）——串行与并行通信，同步与异步通信](https://blog.csdn.net/sym_robot/article/details/113182977)
+- [2] [CSDN:串口通信基础（一）——串行与并行通信，同步与异步通信](https://blog.csdn.net/sym_robot/article/details/113182977)
 
 <div id="ref3"></div>
 
-- [3] [串口通信协议简介—学习笔记](https://blog.csdn.net/chaofanzz/article/details/122557322) 
+- [3] [CSDN:串口通信协议简介—学习笔记](https://blog.csdn.net/chaofanzz/article/details/122557322) 
+
+<div id="ref4"></div>
+
+- [4] [CSDN:什么叫硬件流控制](https://blog.csdn.net/yufangbo/article/details/4087487) 
+
+<div id="ref5"></div>
+
+- [5] [CSDN:stm32串口USART 硬件流控](https://blog.csdn.net/weixin_44403365/article/details/109778722) 
+
+<div id="ref6"></div>
+
+- [6] [CSDN:STM32串口多机通信](https://blog.csdn.net/zyboy2000/article/details/7568109) 
+
+<div id="ref7"></div>
+
+- [7] [CSDN:STM32—重定向printf和getchar函数到串口](https://blog.csdn.net/qq_43743762/article/details/97760854) 
