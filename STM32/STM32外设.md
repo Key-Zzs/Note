@@ -731,10 +731,10 @@ int fputc(int ch, FILE *f)
 }
 int fgetc(FILE *f)
 {
-		//等待串口输入数据
-		while (USART_GetFlagStatus(USARTx, USART_FLAG_RXNE) == RESET);
+	//等待串口输入数据
+	while (USART_GetFlagStatus(USARTx, USART_FLAG_RXNE) == RESET);
 
-		return (int)USART_ReceiveData(USART1);
+	return (int)USART_ReceiveData(USART1);
 }
 
 ```
@@ -746,6 +746,25 @@ int fgetc(FILE *f)
 
 ### I2C
 
+#### I2C简介
+
+* I2C协议
+
+    * 物理层[<sup>8<sup>](#refer8)
+
+        ![](STM32_Pic/I2C协议物理层.png)
+
+    * 协议层
+
+        ![](STM32_Pic/I2C协议协议层数据格式.png)
+
+
+
+        ![](STM32_Pic/I2C协议协议层数据复合格式.png)
+
+        
+
+        ![](STM32_Pic/I2C协议协议层数据信号.png)
 
 ### SPI
 
@@ -782,3 +801,7 @@ int fgetc(FILE *f)
 <div id="ref7"></div>
 
 - [7] [CSDN:STM32—重定向printf和getchar函数到串口](https://blog.csdn.net/qq_43743762/article/details/97760854) 
+
+<div id="ref8"></div>
+
+- [8] [CSDN:I2C协议靠这16张图彻底搞懂（超详细）](https://blog.csdn.net/u010632165/article/details/109188507) 
