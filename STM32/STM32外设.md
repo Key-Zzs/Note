@@ -748,7 +748,19 @@ int fgetc(FILE *f)
 
 3. HAL库操作
 
-
+```c
+//printf重定向
+//usart.h
+#include "stdio.h"
+//usart.c
+/* USER CODE BEGIN 1 */
+int fputc(int ch,FILE *f)
+{
+	HAL_UART_Transmit(&huart1,(uint8_t*)&ch,1,100);
+	return ch;
+}
+/* USER CODE END 1 */
+```
 
 ### I2C
 
@@ -787,15 +799,20 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 注：SMBALERT是I2C支持的SMBus和SMBus2.0协议，主要应用于电池管理。
 
+
 - 通信过程
 
-1. 接受器
+1. 接收器
 
 ![](STM32_Pic/I2C接收器时序图.png)
+
+*I2C接收器时序图*
 
 2. 发送器
 
 ![](STM32_Pic/I2C发送器时序图.png)
+
+*I2C发送器时序图*
 
 #### 实际操作
 
@@ -806,7 +823,7 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 ![](STM32_Pic/I2C1复用引脚.png)
 
-```
+```c
 //I2C_mode 
 #define I2C_Mode_I2C                    ((uint16_t)0x0000)
 #define I2C_Mode_SMBusDevice            ((uint16_t)0x0002)  
@@ -828,7 +845,7 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 ```
 
-```
+```c
 //初始化I2C复用引脚
     GPIO_Config(GPIOB, GPIO_Pin_6, GPIO_Mode_AF_OD);
     GPIO_Config(GPIOB, GPIO_Pin_7, GPIO_Mode_AF_OD);
@@ -847,6 +864,82 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
     I2C_Init(I2Cx, &I2C_InitStruct);
 
     I2C_Cmd(I2Cx, ENABLE);
+```
+
+```c
+/**
+  * @brief  发送起始信号并置位，错误码10
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  */
+void I2C_Start(I2C_TypeDef* I2Cx){
+	//产生起始信号
+	I2C_GenerateSTART(I2Cx, ENABLE);
+	//检测EV5事件并清除标志
+	Timeout = I2C_Flag_timeout;
+	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){
+		if((Timeout--)==0){
+			I2C_Timeout_DEBUG(10);
+		}
+	}
+}
+/**
+  * @brief  发送从设备地址接受应答位并置位，错误码11
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  Slave_Address: 从机地址.
+  */
+void I2C_SendAddress(I2C_TypeDef* I2Cx, uint8_t Slave_Address){
+	//发送从设备地址
+	I2C_Send7bitAddress(I2Cx, Slave_Address, I2C_Direction_Transmitter);
+	//检测EV6事件并清除标志
+	Timeout = I2C_Flag_timeout;
+	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)){
+		if((Timeout--)==0){
+			I2C_Timeout_DEBUG(11);
+		}
+	}
+}
+/**
+  * @brief  读取数据
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  pBuffer: 接收数据包.
+  * @param  Slave_Address: 从机地址.
+  * @param  NumByteToRead: 读取字节数
+  * @retval 正常返回1，异常返回0.
+  */
+uint8_t I2C_Receive_Buffer(I2C_TypeDef* I2Cx, uint8_t* pBuffer, uint8_t Slave_Address, u16 NumByteToRead){
+	while(NumByteToRead){
+		if(NumByteToRead == 1){//接收到最后一个数据，发送非应答信号，结束传输
+			I2C_AcknowledgeConfig(I2Cx, DISABLE); //发送非应答信号
+			I2C_GenerateSTOP(I2Cx, ENABLE); //发送停止信号
+		}
+		Timeout = I2C_Flag_timeout*10;
+		while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){
+			if((Timeout--)==0){
+				I2C_Timeout_DEBUG(3);
+			}
+			{
+				//读取一个字节的数据
+				*pBuffer = I2C_ReceiveData(I2Cx);
+				pBuffer++;
+				NumByteToRead--;
+			}
+		}
+	}
+	//重新使能应答
+	I2C_AcknowledgeConfig(I2Cx, ENABLE);
+	return 1;
+}
+```
+
+```c
+//调试函数，返回错误码，方便调试
+#I2C_DEBUG_UART USART1
+static uint32_t I2C_Timeout_DEBUG(uint8_t error_code){
+	if(error_code == 10){
+		USART_SendString(I2C_DEBUG_UART, "Time out!Error code : " + "error_code\n");
+
+	return 0;
+}
 ```
 
 3. HAL库操作
