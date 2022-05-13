@@ -504,11 +504,13 @@ EXTI具有两大功能：产生中断与产生事件。
 
 ## 通信外设
 
+单片机之间的数据传输，称为通信。我们通常将通信分为物理层和协议层：物理层规定了串口通信需要具备的电气特性(通信使用的电平标准)和机械特性(硬件连接的接口线)；协议层规定了数据包的内容，它由启始位、主体数据、校验位以及停止位组成，通讯双方的数据包格式要约定一致才能正常收发数据[<sup>3</sup>](#refer3)。因此，如果我们需要使用某一种协议进行通信，只要使用GPIO在特定的引脚上（物理层）以协议规定的信号时序要求进行输入输出控制，就可以实现基于该协议的通信，这种方式称为“软件模拟协议”。STM32中有专门的片上外设负责不同协议的通信，我们可以直接操作该外设的寄存器，实现基于该协议的通信，这种方式我们称为“硬件协议”，下面分别介绍USART、I2C、CAN等硬件协议通信。
+
 ### UART/USART
 
 * 串口通信
 
-    串口通信(Serial Communication)是一种串行通信方式。我们将串口通信分为物理层与协议层：物理层规定了串口通信需要具备的电气特性(通信使用的电平标准)和机械特性(硬件连接的接口线)；协议层规定了数据包的内容，它由启始位、主体数据、校验位以及停止位组成，通讯双方的数据包格式要约定一致才能正常收发数据[<sup>3</sup>](#refer3)。
+    串口通信(Serial Communication)是一种串行通信方式。
 
     * 物理层
 
@@ -557,9 +559,13 @@ UART全称为通用异步收发器(Universal Asynchronous Reveier and Transmitte
 
 ![](STM32_Pic/USART框图.png)
 
+*USART工作框图*
+
 其简化的工作原理图如下：
 
 ![](STM32_Pic/USART工作原理简化.png)
+
+*USART简化工作框图*
 
 (具体流程待补充！)
 
@@ -746,7 +752,7 @@ int fgetc(FILE *f)
 
 ### I2C
 
-#### I2C简介
+I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 * I2C协议
 
@@ -762,9 +768,88 @@ int fgetc(FILE *f)
 
         ![](STM32_Pic/I2C协议协议层数据复合格式.png)
 
-        
+
 
         ![](STM32_Pic/I2C协议协议层数据信号.png)
+
+#### I2C工作原理
+
+- 整体框图
+
+![](STM32_Pic/I2C框图.png)
+
+*I2C功能框图*
+
+1. 由GPIO复用为SDA、SCL输入或输出I2C通信数据
+2. 通过控制时钟控制寄存器(I2C_CCR)控制通信的时钟频率，可以设置为“标准Standard/快速Fast”两种模式，分别对应100kps、400kps两种通信速率。当设置为“快速模式”(Fast Speed)时，可以选择SCL时钟的占空比：Duty=$\frac{1}{3}$或$\frac{9}{25}$，即Tlow/Thigh=2或$\frac{16}{9}$，这一参数会影响数据的采样率。
+3. 与USART一致，数据通过数据移位寄存器与数据寄存器(I2C_DR)实现互传；如果使能了数据校验，会经过PEC计算器运算，结果存入PEC寄存器(Package Error Check 包错误校验)；当工作在从机模式时，接受到地址位，会与自身地址寄存器(I2C_OAR1/I2C_OAR2)进行比较。
+4. 我们通过操作控制寄存器，读取状态寄存器对I2C的整个工作流程进行控制。
+
+注：SMBALERT是I2C支持的SMBus和SMBus2.0协议，主要应用于电池管理。
+
+- 通信过程
+
+1. 接受器
+
+![](STM32_Pic/I2C接收器时序图.png)
+
+2. 发送器
+
+![](STM32_Pic/I2C发送器时序图.png)
+
+#### 实际操作
+
+1. 寄存器操作
+
+
+2. 标准库操作
+
+![](STM32_Pic/I2C1复用引脚.png)
+
+```
+//I2C_mode 
+#define I2C_Mode_I2C                    ((uint16_t)0x0000)
+#define I2C_Mode_SMBusDevice            ((uint16_t)0x0002)  
+#define I2C_Mode_SMBusHost              ((uint16_t)0x000A)
+
+//I2C_duty_cycle_in_fast_mode 
+#define I2C_DutyCycle_16_9              ((uint16_t)0x4000) /*!< I2C fast mode Tlow/Thigh = 16/9 */
+#define I2C_DutyCycle_2                 ((uint16_t)0xBFFF) /*!< I2C fast mode Tlow/Thigh = 2 */
+
+//I2C_acknowledgement
+#define I2C_Ack_Enable                  ((uint16_t)0x0400)
+#define I2C_Ack_Disable                 ((uint16_t)0x0000)
+
+//I2C_acknowledged_address 
+#define I2C_AcknowledgedAddress_7bit    ((uint16_t)0x4000)
+#define I2C_AcknowledgedAddress_10bit   ((uint16_t)0xC000)
+
+//
+
+```
+
+```
+//初始化I2C复用引脚
+    GPIO_Config(GPIOB, GPIO_Pin_6, GPIO_Mode_AF_OD);
+    GPIO_Config(GPIOB, GPIO_Pin_7, GPIO_Mode_AF_OD);
+
+//配置I2C
+    I2C_InitTypeDef I2C_InitStruct;
+
+    I2C_InitStruct.I2C_ClockSpeed = 400000;
+    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_16_9; 
+    //若为400000，配置为最高采样率；速率为100000时，不需要配置占空比
+    I2C_InitStruct.I2C_OwnAddress1 = 0x0A; //随便配
+    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable; //使能应答位(一般都使能)
+    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit; //配置寻址为7位
+
+    I2C_Init(I2Cx, &I2C_InitStruct);
+
+    I2C_Cmd(I2Cx, ENABLE);
+```
+
+3. HAL库操作
 
 ### SPI
 
