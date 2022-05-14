@@ -816,12 +816,12 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 #### 实际操作
 
+![](STM32_Pic/I2C1复用引脚.png)
+
 1. 寄存器操作
 
 
 2. 标准库操作
-
-![](STM32_Pic/I2C1复用引脚.png)
 
 ```c
 //I2C_mode 
