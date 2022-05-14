@@ -782,7 +782,7 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 
 
 
-        ![](STM32_Pic/I2C协议协议层数据信号.png)
+        ![](STM32_Pic/I2C协议协议层时序图.png)
 
 #### I2C工作原理
 
@@ -841,8 +841,6 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 #define I2C_AcknowledgedAddress_7bit    ((uint16_t)0x4000)
 #define I2C_AcknowledgedAddress_10bit   ((uint16_t)0xC000)
 
-//
-
 ```
 
 ```c
@@ -867,18 +865,62 @@ I2C协议，全称集成电路总线(Inter Integrate Circuit)。
 ```
 
 ```c
+
+/*******************************I2C初始化**************************************/
+void I2C_AFIO_Config(I2C_TypeDef* I2Cx){
+	if(I2Cx == I2C1){
+		GPIO_Config(GPIOB, GPIO_Pin_6, GPIO_Mode_AF_OD);
+		GPIO_Config(GPIOB, GPIO_Pin_7, GPIO_Mode_AF_OD);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_6, Bit_SET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_7, Bit_SET);
+	}else if(I2C1 == I2C2){
+		GPIO_Config(GPIOB, GPIO_Pin_10, GPIO_Mode_AF_OD);
+		GPIO_Config(GPIOB, GPIO_Pin_11, GPIO_Mode_AF_OD);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_10, Bit_SET);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_11, Bit_SET);
+	}
+}
+
+void I2C_Mode_Config(I2C_TypeDef* I2Cx, uint16_t I2C_Mode, uint16_t I2C_OwnAddress, int I2C_AcknowledgedAddress, uint32_t I2C_Speed_Mode){
+	I2C_InitTypeDef I2C_InitStruct;
+	
+	I2C_InitStruct.I2C_ClockSpeed = I2C_Speed_Mode;
+	I2C_InitStruct.I2C_Mode = I2C_Mode;
+	if(I2C_Speed_Mode == 400000){
+		I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_16_9; //这里配置为最高采样率
+	}else{//速率为100000时，不需要配置占空比
+	}
+	I2C_InitStruct.I2C_OwnAddress1 = I2C_OwnAddress;
+	I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;
+	if(I2C_AcknowledgedAddress == 7){
+		I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+	}else{
+		I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_10bit;
+	}
+	
+	I2C_Init(I2Cx, &I2C_InitStruct);
+	
+	I2C_Cmd(I2Cx, ENABLE);
+}
+
+void I2C_config(I2C_TypeDef* I2Cx, uint16_t I2C_Mode, uint16_t I2C_OwnAddress, int I2C_AcknowledgedAddress, uint32_t I2C_Speed_Mode){
+	I2C_AFIO_Config(I2Cx);
+	I2C_Mode_Config(I2Cx, I2C_Mode, I2C_OwnAddress, I2C_AcknowledgedAddress, I2C_Speed_Mode);
+}
+
+/********************************I2C功能函数***********************************/
 /**
   * @brief  发送起始信号并置位，错误码10
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
   */
-void I2C_Start(I2C_TypeDef* I2Cx){
+void I2C_Start(I2C_TypeDef* I2Cx, uint8_t error_code){
 	//产生起始信号
 	I2C_GenerateSTART(I2Cx, ENABLE);
 	//检测EV5事件并清除标志
 	Timeout = I2C_Flag_timeout;
 	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){
 		if((Timeout--)==0){
-			I2C_Timeout_DEBUG(10);
+			I2C_Timeout_DEBUG(error_code);
 		}
 	}
 }
@@ -886,27 +928,46 @@ void I2C_Start(I2C_TypeDef* I2Cx){
   * @brief  发送从设备地址接受应答位并置位，错误码11
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
   * @param  Slave_Address: 从机地址.
+  * @param  I2C_Direction: specifies whether the I2C device will be a
+  *   Transmitter or a Receiver. This parameter can be one of the following values
+  *     @arg I2C_Direction_Transmitter: Transmitter mode
+  *     @arg I2C_Direction_Receiver: Receiver mode
   */
-void I2C_SendAddress(I2C_TypeDef* I2Cx, uint8_t Slave_Address){
+void I2C_Send_SlaveAddress(I2C_TypeDef* I2Cx, uint8_t Slave_Address, uint8_t I2C_Direction, uint8_t error_code){
 	//发送从设备地址
-	I2C_Send7bitAddress(I2Cx, Slave_Address, I2C_Direction_Transmitter);
+	I2C_Send7bitAddress(I2Cx, Slave_Address, I2C_Direction);
 	//检测EV6事件并清除标志
 	Timeout = I2C_Flag_timeout;
 	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED)){
 		if((Timeout--)==0){
-			I2C_Timeout_DEBUG(11);
+			I2C_Timeout_DEBUG(error_code);
 		}
 	}
 }
 /**
-  * @brief  读取数据
+  * @brief  发送从设备寄存器地址接受应答位并置位，错误码12
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  pBuffer: 接收数据包.
   * @param  Slave_Address: 从机地址.
+  */
+void I2C_Send_RegAddress(I2C_TypeDef* I2Cx, uint8_t Reg_Address, uint8_t error_code){
+	//发送从设备地址
+	I2C_SendData(I2Cx, Reg_Address);
+	//检测EV6事件并清除标志
+	Timeout = I2C_Flag_timeout;
+	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)){
+		if((Timeout--)==0){
+			I2C_Timeout_DEBUG(error_code);
+		}
+	}
+}
+/**
+  * @brief  读取数据并停止
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  pBuffer: 接收数据保存到pBuffer包中.
   * @param  NumByteToRead: 读取字节数
   * @retval 正常返回1，异常返回0.
   */
-uint8_t I2C_Receive_Buffer(I2C_TypeDef* I2Cx, uint8_t* pBuffer, uint8_t Slave_Address, u16 NumByteToRead){
+uint8_t I2C_Receive_Stop(I2C_TypeDef* I2Cx, uint8_t* pBuffer, u16 NumByteToRead, uint8_t error_code){
 	while(NumByteToRead){
 		if(NumByteToRead == 1){//接收到最后一个数据，发送非应答信号，结束传输
 			I2C_AcknowledgeConfig(I2Cx, DISABLE); //发送非应答信号
@@ -915,7 +976,7 @@ uint8_t I2C_Receive_Buffer(I2C_TypeDef* I2Cx, uint8_t* pBuffer, uint8_t Slave_Ad
 		Timeout = I2C_Flag_timeout*10;
 		while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){
 			if((Timeout--)==0){
-				I2C_Timeout_DEBUG(3);
+				I2C_Timeout_DEBUG(error_code);
 			}
 			{
 				//读取一个字节的数据
@@ -929,20 +990,86 @@ uint8_t I2C_Receive_Buffer(I2C_TypeDef* I2Cx, uint8_t* pBuffer, uint8_t Slave_Ad
 	I2C_AcknowledgeConfig(I2Cx, ENABLE);
 	return 1;
 }
+/**
+  * @brief  写入数据并停止
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  pBuffer: 接收数据保存到pBuffer包中.
+  * @param  NumByteToRead: 读取字节数
+  * @retval 正常返回1，异常返回0.
+  */
+uint8_t I2C_Transmit_Stop(I2C_TypeDef* I2Cx, uint8_t* pBuffer, uint8_t error_code){
+	I2C_SendData(I2Cx, *pBuffer);
+	Timeout = I2C_Flag_timeout;
+	while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTED)){
+		if((Timeout--)==0){
+			I2C_Timeout_DEBUG(error_code);
+			return 0;
+		}
+	}
+	return 1;
+}
+/**
+  * @brief  写入数据
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  pBuffer: 接收数据保存到pBuffer包中.
+  * @param  Slave_Address: 从机地址.
+  * @param  WriteAddress: 数据写入地址.
+  * @param  NumByteToRead: 读取字节数
+  * @retval 正常返回1，异常返回0.
+  */
+uint32_t I2C_WriteByte(I2C_TypeDef* I2Cx, uint8_t Slave_Address, u8 WriteAddress, uint8_t pBuffer, uint8_t error_code){
+	I2C_Start(I2Cx, error_code);
+	I2C_Send_SlaveAddress(I2Cx, Slave_Address, I2C_Direction_Transmitter, error_code); //发送从设备地址
+	I2C_Send_RegAddress(I2Cx, WriteAddress, error_code); //发送写入的从设备寄存器地址
+	I2C_Transmit_Stop(I2Cx, &pBuffer, error_code);
+	I2C_GenerateSTOP(I2Cx, ENABLE);
+	return 1;
+}
+/**
+  * @brief  读取数据
+  * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
+  * @param  MPU6050_Buffer: 接收从机的寄存器数据保存到MPU6050_Buffer中.
+  * @param  Reg_Address: 数据读取地址.
+  * @param  NumByteToRead: 读取字节数
+  * @retval 正常返回1，异常返回0.
+  */
+uint8_t I2C_ReadBuffer(I2C_TypeDef* I2Cx, uint8_t Slave_Address, uint8_t Read_Address, uint8_t pBuffer, u16 NumByteToBuffer, uint8_t error_code){
+	I2C_Start(I2Cx, error_code); //起始位
+	I2C_Send_SlaveAddress(I2Cx, Slave_Address, I2C_Direction_Transmitter, error_code); //从设备地址，写入开始
+	I2C_Cmd(I2Cx, ENABLE); //清除EV6事件
+	I2C_Send_RegAddress(I2Cx, Read_Address, error_code); //读取的从设备寄存器地址
+	I2C_Start(I2Cx, error_code); //读取起始位
+	I2C_Send_SlaveAddress(I2Cx, 0x69, I2C_Direction_Receiver, error_code); //从设备地址，读取开始
+	I2C_Receive_Stop(I2Cx, &pBuffer, NumByteToBuffer, error_code); //读取数据
+	
+	return 1;
+}
 ```
 
 ```c
 //调试函数，返回错误码，方便调试
 #I2C_DEBUG_UART USART1
 static uint32_t I2C_Timeout_DEBUG(uint8_t error_code){
-	if(error_code == 10){
-		USART_SendString(I2C_DEBUG_UART, "Time out!Error code : " + "error_code\n");
-
+	USART_SendData(I2C_DEBUG_UART, error_code);
 	return 0;
 }
 ```
 
 3. HAL库操作
+
+![](STM32_Pic/I2C_HAL配置.png)
+
+```c
+//stm32f1xx_hal_i2c.h MemAddSize
+#define I2C_MEMADD_SIZE_8BIT            0x00000001U
+#define I2C_MEMADD_SIZE_16BIT           0x00000010U
+```
+
+```c
+HAL_I2C_Init(&hi2c1);
+HAL_I2C_Mem_Write(&hi2c1, Device_Address, Register_Address, I2C_MEMADD_SIZE_8BIT, &pData, 1, 0xfff);
+HAL_I2C_Mem_Read(&hi2c1, Device_Address, Register_Address, I2C_MEMADD_SIZE_8BIT, &pData, 1, 0xfff);
+```
 
 ### SPI
 
