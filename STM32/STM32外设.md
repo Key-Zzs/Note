@@ -1073,6 +1073,20 @@ HAL_I2C_Mem_Read(&hi2c1, Device_Address, Register_Address, I2C_MEMADD_SIZE_8BIT,
 
 ### SPI
 
+#### SPI协议简介
+
+SPI，全称Serial Periph Interface，即串口外围设备接口，是一种高速全双工总线协议，一般用于通信速率高的场合。
+
+- 物理层
+
+![](STM32_Pic/SPI协议物理层.png)
+
+- 协议层
+
+![](STM32_Pic/SPI协议协议层.png)
+
+
+
 
 ### DMA
 
@@ -1110,3 +1124,7 @@ HAL_I2C_Mem_Read(&hi2c1, Device_Address, Register_Address, I2C_MEMADD_SIZE_8BIT,
 <div id="ref8"></div>
 
 - [8] [CSDN:I2C协议靠这16张图彻底搞懂（超详细）](https://blog.csdn.net/u010632165/article/details/109188507) 
+
+<div id="ref9"></div>
+
+- [9] [CSDN:SPI协议详解（图文并茂+超详细）](https://blog.csdn.net/u010632165/article/details/109460814) 
