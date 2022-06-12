@@ -1,6 +1,12 @@
 % 导言区
 \documentclass[UTF8]{article} % book report letter
 \usepackage{ctex}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{palatino}
+\usepackage{tikz}
+\usepackage{float}
 
 \title{\heiti 数学建模基础}
 \author{\kaishu 庄梓伸}
@@ -12,6 +18,95 @@
 
 \section{层次分析法}
 
+适用于评价类问题，其主要思路步骤如下
+\begin{itemize}
+    \item 明确评价目标
+    \item 确定可选方案
+    \item 查阅相关文献确定方案的评价指标
+    \item 对各评价指标权重进行标度并得到判断矩阵
+    \item 对判断矩阵进行一致性检验并适当修正
+    \item 计算权重列写权重表进行分析
+\end{itemize}
 
+\subsection{标度及判断矩阵}
+
+当面对多个评价指标时，我们往往无法综合地评判个指标的重要性，
+因此分别比较各指标的权重，称为 标度 ，标度的含义如表1所示。
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        标度 & 含义 \\
+        \hline
+        1 & 同等重要\\
+        \hline
+        3 & 稍微重要\\
+        \hline
+        5 & 比较重要\\
+        \hline
+        7 & 明显重要\\
+        \hline
+        9 & 极端重要\\
+        \hline
+        2、4、6、8 & 中值\\
+        \hline
+        倒数 & 相反\\
+        \hline
+    \end{tabular}
+    \caption{标度的数值含义}
+    \label{tab:table}
+\end{table}
+
+然后由两两指标的标度我们可以得到表2，该表写为矩阵形式，称为判断矩阵，形式如下。
+
+\begin{equation}
+    \frac{1}{2}
+\end{equation}
+
+我们称满足$a_{ij} a_{jk} = a_{ik}$的判断矩阵为一致矩阵。
+往往，我们得到的判断矩阵不是一直矩阵，此时我们应该进行一致性检验。
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & 指标1 & 指标2 & 指标3 & ... \\
+        \hline
+        指标1 & 1 & $a/b$ & $a/c$ & ... \\
+        \hline
+        指标2 & $b/a$ & 1 & $b/c$ & ... \\
+        \hline
+        指标3 & $c/a$ & $c/b$ & 1 & ... \\
+        \hline
+        ... & ... & ... & ... & 1 \\
+        \hline
+    \end{tabular}
+    \caption{标度表}
+    \label{tab:table}
+\end{table}
+
+\subsection{一致性检验}
+
+
+
+\subsection{权重表}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & 指标权重 & 方案1 & 方案2 & ... \\
+        \hline
+        指标1 & & & &\\
+        \hline
+        指标2 & & & &\\
+        \hline
+        ... & & & &\\
+        \hline
+    \end{tabular}
+    \caption{权重表}
+    \label{tab:table}
+\end{table}
 
 \end{document}
