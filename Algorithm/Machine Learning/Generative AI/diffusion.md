@@ -47,13 +47,13 @@ Diffusion Model 与生成式 AI 的思路一致，但架构中的 encoder 被替
 
 <img src="/Algorithm/Machine Learning/Generative AI/Pic/Diffusion process.png" alt="Diffusion process" width="800">
 
-其中，添加噪声的步骤称为 **forward process** ，Denoise 模块的内部架构如下
+其中，添加噪声的步骤称为 **forward diffusion process** ，Denoise 模块称为 **reverse diffusion process** ，其内部架构如下
 
 <img src="/Algorithm/Machine Learning/Generative AI/Pic/Denoise.png" alt="Denoise" width="800">
 
 ### 算法流程及数学推导
 
-discrete direction probability method(DDPM)
+discrete direction probability method(DDPM) 的训练流程与推理（sample）流程如下
 
 <table>
     <tr>
@@ -62,4 +62,15 @@ discrete direction probability method(DDPM)
     </tr>
 </table>
 
+---
 
+## 参考资料
+
+### 文献
+
+- [1] [Diffusion Policy: Visuomotor Policy Learning via Action Diffusion](https://arxiv.org/pdf/2303.04137v5)
+- [2] [Understanding Diffusion Models: A Unified Perspective](https://arxiv.org/pdf/2208.11970)
+
+### 学习资料
+
+- [1] [扩散模型 - Diffusion Model【李宏毅2023】](https://www.bilibili.com/video/BV14c411J7f2/?p=3&share_source=copy_web&vd_source=20492a387166d54ed6b0a03ef2b28f1f)
