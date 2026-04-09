@@ -62,6 +62,24 @@ discrete direction probability method(DDPM) 的训练流程与推理（sample）
     </tr>
 </table>
 
+#### 1 Training
+
+![[DDPM Training.png]]
+
+
+#### 2 Sampling
+
+![[DDPM Sampling.png]]
+
+DDPM 单步的推理流程图如下，
+
+![[DDPM Sampling framework.png]]
+
+
+# Diffusion Policy
+
+
+
 ---
 
 ## 参考资料
