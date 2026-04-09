@@ -66,6 +66,11 @@ discrete direction probability method(DDPM) 的训练流程与推理（sample）
 
 ![[DDPM Training.png]]
 
+DDPM 的训练目标是让 diffusion model 中的 noise predictor 预测出含噪声图片中的噪声。
+
+训练流程是取上一步的图片 $x$ （初始为原始干净照片），并取一个服从正态分布的噪声信号 $\epsilon$ ，将 $x$ 与 $\epsilon$ 做加权和得到含噪声图片，并对该步的 $x$ 与含噪图片的差异（后面会详细介绍如何评价分布的差异）做梯度下降，最终得到预测噪声。
+
+下面介绍如何将多步的噪声预测推导为单步预测
 
 #### 2 Sampling
 
