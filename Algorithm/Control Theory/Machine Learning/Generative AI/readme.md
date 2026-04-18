@@ -17,8 +17,8 @@
 
 ### diffusion
 
-[DDPM 推导](./diffusion/DDPM.md)
-[diffusion policy](./diffusion/diffusion_policy.md)
+[DDPM 推导](DDPM.md)
+[diffusion policy](diffusion_policy.md)
 
 1. 文献汇总
    
